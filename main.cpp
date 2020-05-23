@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "hits.h"
 #include "ppmutil.h"
 #include "ray3.h"
 #include "vec3.h"
@@ -11,6 +12,10 @@ vec3 lerp(const vec3& a, const vec3& b, double t) {
 }
 
 color rayColor(const ray3& ray) {
+	if (doesIntersecteSphere(point3(0.0, 0.0, -1.0), 0.5, ray)) {
+		return color(1.0, 0.0, 0.0);
+	}
+
 	auto rayDir = normalize(ray.direction);
 	auto t = 0.5 * (rayDir.y + 1);
 	return lerp(color(1.0, 1.0, 1.0), color(0.5, 0.7, 1.0), t);
