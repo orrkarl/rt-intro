@@ -18,9 +18,9 @@ void pixel(uint8_t r, uint8_t g, uint8_t b, std::ostream& out) {
 }
 
 void pixel(double r, double g, double b, std::ostream& out) {
-	auto ir = static_cast<uint8_t>(256 * r);
-	auto ig = static_cast<uint8_t>(256 * g);
-	auto ib = static_cast<uint8_t>(256 * b);
+	auto ir = static_cast<uint8_t>(255.999 * r);
+	auto ig = static_cast<uint8_t>(255.999 * g);
+	auto ib = static_cast<uint8_t>(255.999 * b);
 	pixel(ir, ig, ib, out);
 }
 

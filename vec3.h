@@ -15,6 +15,13 @@ public:
 		return {-x, -y, -z};
 	}
 
+	vec3& operator-=(const vec3& v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		return *this;
+	}
+
 	vec3& operator+=(const vec3& v) {
 		x += v.x;
 		y += v.y;
@@ -68,6 +75,10 @@ inline vec3 operator+(const vec3& lhs, const vec3& rhs) {
 		lhs.y + rhs.y,
 		lhs.z + rhs.z
 	};
+}
+
+inline vec3 operator-(const vec3& lhs, const vec3& rhs) {
+	return lhs + (-rhs);
 }
 
 inline vec3 operator*(const vec3& lhs, const vec3& rhs) {
