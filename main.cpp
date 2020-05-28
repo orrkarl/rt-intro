@@ -1,5 +1,6 @@
 #include "rtintro.h"
 
+#include "Camera.h"
 #include "HittableList.h"
 #include "Sphere.h"
 
@@ -23,18 +24,13 @@ int main() {
 	constexpr auto aspectRatio = 16.0 / 9.0;
 	constexpr uint32_t imageWidth = 384;
 	constexpr uint32_t imageHeight = imageWidth / aspectRatio;
-	constexpr auto viewportHeight = 2.0;
-	constexpr auto viewportWidth = aspectRatio * viewportHeight;
-	constexpr auto focalLength = 1.0;
-
-	const vec3 origin(0.0, 0.0, 0.0);
-	const vec3 horizontal(viewportWidth, 0.0, 0.0);
-	const vec3 vertical(0.0, viewportHeight, 0.0);
-	const auto lowLeftCorner = origin - horizontal / 2 - vertical / 2 - vec3(0, 0, focalLength);
+	constexpr uint32_t samplesPerPixel = 100;
 
 	HittableList world;
 	world.add(std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5));
 	world.add(std::make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100));
+
+	Camera cam;
 
 	std::ofstream resultFile("image.ppm");
 	ppm::write::header(imageWidth, imageHeight, resultFile);
@@ -42,10 +38,14 @@ int main() {
 	for (auto j = 0u; j < imageHeight; ++j) {
 		auto y = imageHeight - 1 - j;
 		for (auto x = 0u; x < imageWidth; ++x) {
-			const auto u = double(x) / imageWidth;
-			const auto v = double(y) / imageHeight;
-			ray r(origin, lowLeftCorner + u * horizontal + v * vertical - origin);
-			ppm::write::pixel(rayColor(r, world), resultFile);
+			color pixelColor;
+			for (auto s = 0u; s < samplesPerPixel; ++s) {
+				const auto u = (x + nextRandomDouble()) / imageWidth;
+				const auto v = (y + nextRandomDouble()) / imageHeight;
+				auto r = cam.rayAt(u, v);
+				pixelColor += rayColor(r, world) / samplesPerPixel;
+			}
+			ppm::write::pixel(pixelColor, resultFile);
 		}
 	}
 }
