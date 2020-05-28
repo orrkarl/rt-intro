@@ -3,7 +3,7 @@
 #include "ray3.h"
 #include "vec3.h"
 
-bool doesIntersecteSphere(const vec3& center, double radius, const ray3& r) {
+double intersection(const vec3& center, double radius, const ray3& r) {
 	auto delta = r.origin - center;
 
 	const auto a = r.direction.lengthSquared();
@@ -12,6 +12,10 @@ bool doesIntersecteSphere(const vec3& center, double radius, const ray3& r) {
 
 	const auto discriminant = b * b - 4 * a * c;
 
-	return discriminant > 0;
+	if (discriminant < 0) {
+		return -1.0;
+	}
+
+	return (-b - std::sqrt(discriminant)) / (2.0 * a);
 }
 

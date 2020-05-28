@@ -7,18 +7,24 @@
 #include "ray3.h"
 #include "vec3.h"
 
+const point3 g_center(0.0, 0.0, -1.0);
+const double g_radius = 0.5;
+
 vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;
 }
 
 color rayColor(const ray3& ray) {
-	if (doesIntersecteSphere(point3(0.0, 0.0, -1.0), 0.5, ray)) {
-		return color(1.0, 0.0, 0.0);
+	const auto t = intersection(g_center, g_radius, ray);
+
+	if (t > 0.0) {
+		vec3 normal = normalize(ray.at(t) - g_center);
+		return 0.5 * color(normal.x + 1, normal.y + 1, normal.z + 1);
 	}
 
 	auto rayDir = normalize(ray.direction);
-	auto t = 0.5 * (rayDir.y + 1);
-	return lerp(color(1.0, 1.0, 1.0), color(0.5, 0.7, 1.0), t);
+	auto colorInterp = 0.5 * (rayDir.y + 1);
+	return lerp(color(1.0, 1.0, 1.0), color(0.5, 0.7, 1.0), colorInterp);
 }
 
 int main() {
