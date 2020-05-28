@@ -1,17 +1,17 @@
-#include "Circle.h"
+#include "Sphere.h"
 
-Circle::Circle(const point3& center, double radius) 
+Sphere::Sphere(const point3& center, double radius) 
 	: m_center(center), m_radius(radius) {
 	// Intentionally left empty
 }
 
-HitRecord makeHitRecord(const Circle& c, const ray& r, double t) {
+HitRecord makeHitRecord(const Sphere& c, const ray& r, double t) {
 	const auto p = r.at(t);
 	const auto normal = (p - c.center()) / c.radius();
 	return {p, normal, r.direction, t};	
 }
 
-bool Circle::hit(const ray& r, TBoundaries bounds, HitRecord& record) const {
+bool Sphere::hit(const ray& r, TBoundaries bounds, HitRecord& record) const {
 	auto delta = r.origin - m_center;
 
 	const auto a = r.direction.lengthSquared();
@@ -39,10 +39,10 @@ bool Circle::hit(const ray& r, TBoundaries bounds, HitRecord& record) const {
 	return false;
 }
 
-point3 Circle::center() const {
+point3 Sphere::center() const {
 	return m_center;
 }
 
-double Circle::radius() const {
+double Sphere::radius() const {
 	return m_radius;
 }

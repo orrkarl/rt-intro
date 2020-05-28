@@ -1,25 +1,17 @@
-#include <cstdint>
-#include <limits>
-#include <iostream>
-#include <fstream>
+#include "rtintro.h"
 
-#include "Circle.h"
-#include "ppmutil.h"
-#include "ray.h"
-#include "vec3.h"
-
-const Circle g_circle(point3(0.0, 0.0, -1.0), 0.5);
-const double g_infinity = std::numeric_limits<double>::infinity();
+#include "HittableList.h"
+#include "Sphere.h"
 
 vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;
 }
 
-color rayColor(const ray& ray) {
+color rayColor(const ray& ray, const IHittable& world) {
 	HitRecord hit;
 
-	if (g_circle.hit(ray, TBoundaries{-g_infinity, g_infinity}, hit)) {
-		return 0.5 * color(hit.normal.x + 1, hit.normal.y + 1, hit.normal.z + 1);
+	if (world.hit(ray, TBoundaries{0, infinity}, hit)) {
+		return 0.5 * (hit.normal + color(1, 1, 1));
 	}
 
 	auto rayDir = normalize(ray.direction);
@@ -40,6 +32,10 @@ int main() {
 	const vec3 vertical(0.0, viewportHeight, 0.0);
 	const auto lowLeftCorner = origin - horizontal / 2 - vertical / 2 - vec3(0, 0, focalLength);
 
+	HittableList world;
+	world.add(std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5));
+	world.add(std::make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100));
+
 	std::ofstream resultFile("image.ppm");
 	ppm::write::header(imageWidth, imageHeight, resultFile);
 
@@ -49,7 +45,7 @@ int main() {
 			const auto u = double(x) / imageWidth;
 			const auto v = double(y) / imageHeight;
 			ray r(origin, lowLeftCorner + u * horizontal + v * vertical - origin);
-			ppm::write::pixel(rayColor(r), resultFile);
+			ppm::write::pixel(rayColor(r, world), resultFile);
 		}
 	}
 }

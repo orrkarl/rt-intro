@@ -2,6 +2,8 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <fstream>
+#include <iostream>
 #include <limits>
 #include <memory>
 
@@ -27,3 +29,5 @@ inline double degrees_to_radians(double degrees) {
 
 #include "ray.h"
 #include "vec3.h"
+#include "ppmutil.h"
+

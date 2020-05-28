@@ -3,9 +3,9 @@
 #include "IHittable.h"
 #include "ray.h"
 
-class Circle : public IHittable {
+class Sphere : public IHittable {
 public:
-	Circle(const point3& center, double radius);
+	Sphere(const point3& center, double radius);
 
 	bool hit(const ray& r, TBoundaries bounds, HitRecord& record) const override;
 
