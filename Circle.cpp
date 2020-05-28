@@ -5,13 +5,13 @@ Circle::Circle(const point3& center, double radius)
 	// Intentionally left empty
 }
 
-HitRecord makeHitRecord(const Circle& c, const ray3& r, double t) {
+HitRecord makeHitRecord(const Circle& c, const ray& r, double t) {
 	const auto p = r.at(t);
 	const auto normal = (p - c.center()) / c.radius();
-	return {p, normal, t};	
+	return {p, normal, r.direction, t};	
 }
 
-bool Circle::hit(const ray3& r, const TBoundaries& bounds, HitRecord& record) const {
+bool Circle::hit(const ray& r, TBoundaries bounds, HitRecord& record) const {
 	auto delta = r.origin - m_center;
 
 	const auto a = r.direction.lengthSquared();

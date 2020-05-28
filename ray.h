@@ -2,11 +2,11 @@
 
 #include "vec3.h"
 
-class ray3 {
+class ray {
 public:
-	ray3() = default;
+	ray() = default;
 
-	ray3(const point3& origin, const vec3& dir)
+	ray(const point3& origin, const vec3& dir)
 		: origin(origin), direction(dir) {
 	}
 

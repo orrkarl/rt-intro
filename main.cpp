@@ -5,7 +5,7 @@
 
 #include "Circle.h"
 #include "ppmutil.h"
-#include "ray3.h"
+#include "ray.h"
 #include "vec3.h"
 
 const Circle g_circle(point3(0.0, 0.0, -1.0), 0.5);
@@ -15,7 +15,7 @@ vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;
 }
 
-color rayColor(const ray3& ray) {
+color rayColor(const ray& ray) {
 	HitRecord hit;
 
 	if (g_circle.hit(ray, TBoundaries{-g_infinity, g_infinity}, hit)) {
@@ -48,7 +48,7 @@ int main() {
 		for (auto x = 0u; x < imageWidth; ++x) {
 			const auto u = double(x) / imageWidth;
 			const auto v = double(y) / imageHeight;
-			ray3 r(origin, lowLeftCorner + u * horizontal + v * vertical - origin);
+			ray r(origin, lowLeftCorner + u * horizontal + v * vertical - origin);
 			ppm::write::pixel(rayColor(r), resultFile);
 		}
 	}
