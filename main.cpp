@@ -1,25 +1,25 @@
 #include <cstdint>
+#include <limits>
 #include <iostream>
 #include <fstream>
 
-#include "hits.h"
+#include "Circle.h"
 #include "ppmutil.h"
 #include "ray3.h"
 #include "vec3.h"
 
-const point3 g_center(0.0, 0.0, -1.0);
-const double g_radius = 0.5;
+const Circle g_circle(point3(0.0, 0.0, -1.0), 0.5);
+const double g_infinity = std::numeric_limits<double>::infinity();
 
 vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;
 }
 
 color rayColor(const ray3& ray) {
-	const auto t = intersection(g_center, g_radius, ray);
+	HitRecord hit;
 
-	if (t > 0.0) {
-		vec3 normal = normalize(ray.at(t) - g_center);
-		return 0.5 * color(normal.x + 1, normal.y + 1, normal.z + 1);
+	if (g_circle.hit(ray, TBoundaries{-g_infinity, g_infinity}, hit)) {
+		return 0.5 * color(hit.normal.x + 1, hit.normal.y + 1, hit.normal.z + 1);
 	}
 
 	auto rayDir = normalize(ray.direction);
