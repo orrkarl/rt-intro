@@ -157,16 +157,3 @@ inline vec3 reflect(const vec3& v, const vec3& normal) {
 	return v - 2 * dot(v, normal) * normal;
 }
 
-inline vec3 snellRefract(const vec3& r, const vec3& normal, double snellRatio) {
-	auto cosTheta = dot(-r, normal);
-	
-	auto sinTheta = std::sqrt(1 - cosTheta * cosTheta);
-	if (snellRatio * sinTheta > 1.0) {
-		return reflect(r, normal);
-	}
-
-	auto outParallel = snellRatio * (r + cosTheta * normal);
-	auto outPerp = -std::sqrt(1.0 - outParallel.lengthSquared()) * normal;
-	return outPerp + outParallel;
-}
-
