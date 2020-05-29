@@ -153,3 +153,7 @@ inline vec3 randomUnitVector() {
 	return {r * std::cos(a), r * std::sin(a), z};
 }
 
+inline vec3 reflect(const vec3& v, const vec3& normal) {
+	return v - 2 * dot(v, normal) * normal;
+}
+

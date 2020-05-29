@@ -1,14 +1,14 @@
 #include "Sphere.h"
 
-Sphere::Sphere(const point3& center, double radius) 
-	: m_center(center), m_radius(radius) {
+Sphere::Sphere(const point3& center, double radius, std::shared_ptr<IMaterial> material) 
+	: m_center(center), m_radius(radius), m_materialPtr(material) {
 	// Intentionally left empty
 }
 
 HitRecord makeHitRecord(const Sphere& c, const ray& r, double t) {
 	const auto p = r.at(t);
 	const auto normal = (p - c.center()) / c.radius();
-	return {p, normal, r.direction, t};	
+	return {p, normal, r.direction, t, c.material()};	
 }
 
 bool Sphere::hit(const ray& r, TBoundaries bounds, HitRecord& record) const {
@@ -45,4 +45,8 @@ point3 Sphere::center() const {
 
 double Sphere::radius() const {
 	return m_radius;
+}
+
+std::shared_ptr<IMaterial> Sphere::material() const {
+	return m_materialPtr;
 }

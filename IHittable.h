@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "ray.h"
+
+class IMaterial;
 
 struct TBoundaries {
 	double min;
@@ -9,12 +13,13 @@ struct TBoundaries {
 
 struct HitRecord {
 	HitRecord() = default;
-	HitRecord(const point3& p, const vec3& outwardsNormal, const vec3& rayDirection, double t);
+	HitRecord(const point3& p, const vec3& outwardsNormal, const vec3& rayDirection, double t, std::shared_ptr<IMaterial> material);
 
 	bool frontFace;
 	point3 p;
 	vec3 normal;
 	double t;
+	std::shared_ptr<IMaterial> materialPtr;
 };
 
 class IHittable {
