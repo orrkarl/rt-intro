@@ -43,6 +43,7 @@ int main() {
 	constexpr uint32_t imageHeight = imageWidth / aspectRatio;
 	constexpr uint32_t samplesPerPixel = 100;
 	constexpr uint64_t maxDepth = 50;
+	constexpr auto aperture = 2.0;
 
 	HittableList world;
 	world.add(make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5, make_shared<Lambertian>(color(0.1, 0.2, 0.5))));
@@ -51,7 +52,10 @@ int main() {
     world.add(make_shared<Sphere>(point3(-1,0,-1), 0.5, make_shared<Dielectric>(dielectric_factor::GLASS)));
     world.add(make_shared<Sphere>(point3(-1,0,-1), -0.45, make_shared<Dielectric>(dielectric_factor::GLASS)));
 
-	Camera cam(point3(-2,2,1), point3(0,0,-1), vec3(0,1,0), 20, aspectRatio);
+	const auto cameraPos = point3(3,3,2);
+	const auto cameraTarget = point3(0,0,-1);
+	const auto cameraUp = vec3(0,1,0);
+	Camera cam(cameraPos, cameraTarget, cameraUp, 20, aspectRatio, aperture, (cameraPos - cameraTarget).length());
 
 	std::ofstream resultFile("image.ppm");
 	ppm::write::header(imageWidth, imageHeight, resultFile);

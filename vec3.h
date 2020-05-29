@@ -153,6 +153,15 @@ inline vec3 randomUnitVector() {
 	return {r * std::cos(a), r * std::sin(a), z};
 }
 
+inline vec3 randomInUnitDisk() {
+	while (true) {
+		vec3 p(nextRandomDouble(-1, 1), nextRandomDouble(-1, 1), 0);
+		if (p.lengthSquared() < 1) {
+			return p;
+		}
+	}
+}
+
 inline vec3 reflect(const vec3& v, const vec3& normal) {
 	return v - 2 * dot(v, normal) * normal;
 }
