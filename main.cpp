@@ -45,11 +45,11 @@ int main() {
 	constexpr uint64_t maxDepth = 50;
 
 	HittableList world;
-	world.add(std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5, std::make_shared<Lambertian>(color(0.1, 0.2, 0.5))));
-	world.add(std::make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100, std::make_shared<Lambertian>(color(0.8, 0.8, 0.0))));
-
+	world.add(make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5, make_shared<Lambertian>(color(0.1, 0.2, 0.5))));
+	world.add(make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100, make_shared<Lambertian>(color(0.8, 0.8, 0.0))));
 	world.add(make_shared<Sphere>(point3(1,0,-1), 0.5, make_shared<Metal>(color(.8,.6,.2), 0.0)));
     world.add(make_shared<Sphere>(point3(-1,0,-1), 0.5, make_shared<Dielectric>(dielectric_factor::GLASS)));
+    world.add(make_shared<Sphere>(point3(-1,0,-1), -0.45, make_shared<Dielectric>(dielectric_factor::GLASS)));
 
 	Camera cam;
 
