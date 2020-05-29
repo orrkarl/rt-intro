@@ -11,9 +11,9 @@ struct HitRecord {
 	HitRecord() = default;
 	HitRecord(const point3& p, const vec3& outwardsNormal, const vec3& rayDirection, double t);
 
+	bool frontFace;
 	point3 p;
 	vec3 normal;
-	bool frontFace;
 	double t;
 };
 

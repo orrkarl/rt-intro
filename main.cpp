@@ -3,6 +3,9 @@
 #include "Camera.h"
 #include "HittableList.h"
 #include "Sphere.h"
+#include "ray.h"
+#include "vec3.h"
+#include "ppmutil.h"
 
 vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;

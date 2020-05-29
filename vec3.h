@@ -1,10 +1,13 @@
 #pragma once
 
-#include <cmath>
-#include <ostream>
+#include "rtintro.h"
 
 class vec3 {
 public:
+	inline static vec3 random() {
+		return {nextRandomDouble(), nextRandomDouble(), nextRandomDouble()};
+	}
+
 	vec3() : vec3(0.0, 0.0, 0.0) {
 	}
 
