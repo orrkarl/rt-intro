@@ -1,10 +1,11 @@
 #include "Camera.h"
 
-Camera::Camera() {
-	constexpr auto aspectRatio = 16.0 / 9.0;
-    constexpr auto viewportHeight = 2.0;
-    constexpr auto viewportWidth = aspectRatio * viewportHeight;
-    constexpr auto focalLength = 1.0;
+Camera::Camera(double fov, double aspectRatio) {
+	auto theta = degreesToRadians(fov);
+	auto h = tan(theta / 2);
+    auto viewportHeight = 2.0 * h;
+    auto viewportWidth = aspectRatio * viewportHeight;
+    auto focalLength = 1.0;
 
 	m_origin = point3(0.0, 0.0, 0.0);
 	m_horizontal = vec3(viewportWidth, 0.0, 0.0);
