@@ -18,8 +18,8 @@ color rayColor(const ray& r, const IHittable& world, uint64_t depth) {
 
 	HitRecord hit;
 
-	if (world.hit(r, TBoundaries{0, infinity}, hit)) {
-		auto target = hit.p + hit.normal + randomInUnitSphere();
+	if (world.hit(r, TBoundaries{0.0001, infinity}, hit)) {
+		auto target = hit.p + hit.normal + randomUnitVector();
 		return 0.5 * rayColor(ray(hit.p, target - hit.p), world, depth - 1);
 	}
 

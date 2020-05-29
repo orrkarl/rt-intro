@@ -146,3 +146,10 @@ inline vec3 randomInUnitSphere() {
 	}
 }
 
+inline vec3 randomUnitVector() {
+	auto a = nextRandomDouble(0, 2 * M_PI);
+	auto z = nextRandomDouble(-1.0, 1.0);
+	auto r = std::sqrt(1 - z * z);
+	return {r * std::cos(a), r * std::sin(a), z};
+}
+
