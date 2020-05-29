@@ -22,8 +22,7 @@ public:
 	virtual bool scatter(
             const ray& rayIn, const HitRecord& hit, color& attenuation, ray& scattered) const {
 		double snellRatio = hit.frontFace ? (1.0 / m_refractionCoeff) : m_refractionCoeff;
-		auto normalizedRayDir = normalize(rayIn.direction);
-		auto refractionDir = snellReflect(normalizedRayDir, hit.normal, snellRatio);
+		auto refractionDir = snellRefract(normalize(rayIn.direction), hit.normal, snellRatio);
 
 		attenuation = color(1.0, 1.0, 1.0);
 		scattered = ray(hit.p, refractionDir);

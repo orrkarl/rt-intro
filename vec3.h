@@ -157,7 +157,7 @@ inline vec3 reflect(const vec3& v, const vec3& normal) {
 	return v - 2 * dot(v, normal) * normal;
 }
 
-inline vec3 snellReflect(const vec3& r, const vec3& normal, double snellRatio) {
+inline vec3 snellRefract(const vec3& r, const vec3& normal, double snellRatio) {
 	auto cosTheta = dot(-r, normal);
 	
 	auto sinTheta = std::sqrt(1 - cosTheta * cosTheta);
