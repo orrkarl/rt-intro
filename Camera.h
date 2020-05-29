@@ -6,7 +6,7 @@
 
 class Camera {
 public:
-	Camera(double fov, double aspectRatio);
+	Camera(point3 position, point3 target, vec3 up, double fov, double aspectRatio);
 
 	ray rayAt(double u, double v) const;
 

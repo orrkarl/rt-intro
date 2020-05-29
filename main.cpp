@@ -44,12 +44,14 @@ int main() {
 	constexpr uint32_t samplesPerPixel = 100;
 	constexpr uint64_t maxDepth = 50;
 
-	auto R = std::cos(pi / 4);
 	HittableList world;
-	world.add(make_shared<Sphere>(point3(-R,0,-1), R, make_shared<Lambertian>(color(0, 0, 1))));
-	world.add(make_shared<Sphere>(point3( R,0,-1), R, make_shared<Lambertian>(color(1, 0, 0)))); 
+	world.add(make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5, make_shared<Lambertian>(color(0.1, 0.2, 0.5))));
+	world.add(make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100, make_shared<Lambertian>(color(0.8, 0.8, 0.0))));
+	world.add(make_shared<Sphere>(point3(1,0,-1), 0.5, make_shared<Metal>(color(.8,.6,.2), 0.0)));
+    world.add(make_shared<Sphere>(point3(-1,0,-1), 0.5, make_shared<Dielectric>(dielectric_factor::GLASS)));
+    world.add(make_shared<Sphere>(point3(-1,0,-1), -0.45, make_shared<Dielectric>(dielectric_factor::GLASS)));
 
-	Camera cam(90, double(imageWidth) / imageHeight);
+	Camera cam(point3(-2,2,1), point3(0,0,-1), vec3(0,1,0), 20, aspectRatio);
 
 	std::ofstream resultFile("image.ppm");
 	ppm::write::header(imageWidth, imageHeight, resultFile);
