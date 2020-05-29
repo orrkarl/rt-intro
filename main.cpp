@@ -11,14 +11,19 @@ vec3 lerp(const vec3& a, const vec3& b, double t) {
 	return (1.0 - t) * a + t * b;
 }
 
-color rayColor(const ray& ray, const IHittable& world) {
-	HitRecord hit;
-
-	if (world.hit(ray, TBoundaries{0, infinity}, hit)) {
-		return 0.5 * (hit.normal + color(1, 1, 1));
+color rayColor(const ray& r, const IHittable& world, uint64_t depth) {
+	if (depth == 0) {
+		return color(0.0, 0.0, 0.0);
 	}
 
-	auto rayDir = normalize(ray.direction);
+	HitRecord hit;
+
+	if (world.hit(r, TBoundaries{0, infinity}, hit)) {
+		auto target = hit.p + hit.normal + randomInUnitSphere();
+		return 0.5 * rayColor(ray(hit.p, target - hit.p), world, depth - 1);
+	}
+
+	auto rayDir = normalize(r.direction);
 	auto colorInterp = 0.5 * (rayDir.y + 1);
 	return lerp(color(1.0, 1.0, 1.0), color(0.5, 0.7, 1.0), colorInterp);
 }
@@ -28,6 +33,7 @@ int main() {
 	constexpr uint32_t imageWidth = 384;
 	constexpr uint32_t imageHeight = imageWidth / aspectRatio;
 	constexpr uint32_t samplesPerPixel = 100;
+	constexpr uint64_t maxDepth = 50;
 
 	HittableList world;
 	world.add(std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5));
@@ -46,7 +52,7 @@ int main() {
 				const auto u = (x + nextRandomDouble()) / imageWidth;
 				const auto v = (y + nextRandomDouble()) / imageHeight;
 				auto r = cam.rayAt(u, v);
-				pixelColor += rayColor(r, world) / samplesPerPixel;
+				pixelColor += rayColor(r, world, maxDepth) / samplesPerPixel;
 			}
 			ppm::write::pixel(pixelColor, resultFile);
 		}

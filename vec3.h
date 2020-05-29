@@ -8,6 +8,10 @@ public:
 		return {nextRandomDouble(), nextRandomDouble(), nextRandomDouble()};
 	}
 
+	inline static vec3 random(double min, double max) {
+		return {nextRandomDouble(min, max), nextRandomDouble(min, max), nextRandomDouble(min, max)};
+	}
+
 	vec3() : vec3(0.0, 0.0, 0.0) {
 	}
 
@@ -131,5 +135,14 @@ inline vec3 cross(const vec3& u, const vec3& v) {
 
 inline vec3 normalize(const vec3& v) {
 	return v / v.length();
+}
+
+inline vec3 randomInUnitSphere() {
+	while (true) {
+		auto vec = vec3::random(-1, 1);
+		if (vec.lengthSquared() >= 1) {
+			return vec;
+		}
+	}
 }
 
